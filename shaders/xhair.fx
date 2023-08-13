@@ -7,10 +7,10 @@
 
 #include "Reshade.fxh"
 
-#define CATEGORY_GENERAL "General"
-#define CATEGORY_XHAIR_COMPOSITE "Composite Xhair"
-#define CATEGORY_XHAIR_CROSS "[Cross] Xhair"
-#define CATEGORY_XHAIR_CIRCLE "[Circle] Xhair"
+#define CATEGORY_GENERAL "常规"
+#define CATEGORY_XHAIR_COMPOSITE "组合十字准心"
+#define CATEGORY_XHAIR_CROSS "【十字】准心"
+#define CATEGORY_XHAIR_CIRCLE "【圆形】准心"
 
 #define MAX_CROSS_OUTLINE_THICKNESS 10
 #define MAX_CIRCLE_OUTLINE_THICKNESS 10.0
@@ -28,45 +28,45 @@
 uniform int OffsetX <
   ui_category = CATEGORY_GENERAL;
   ui_type = "drag";
-  ui_min = -(BUFFER_WIDTH / 2); ui_max = (BUFFER_WIDTH / 2);
-  ui_label = "X Axis Shift";
-  ui_tooltip = "Offsets the crosshair horizontally from the center of the screen.";
+  ui_min = -(BUFFER_WIDTH / 2); ui_max = (BUFFER_WIDTH / 2);  
+  ui_label = "X 轴偏移";
+  ui_tooltip = "从屏幕中心水平偏移准心。";
 > = 0;
 
 uniform int OffsetY <
   ui_category = CATEGORY_GENERAL;
   ui_type = "drag";
   ui_min = -(BUFFER_HEIGHT / 2); ui_max = (BUFFER_HEIGHT / 2);
-  ui_label = "Y Axis Shift";
-  ui_tooltip = "Offsets the crosshair vertically from the center of the screen.";
+  ui_label = "Y 轴偏移";
+  ui_tooltip = "从屏幕中心垂直偏移准心。";
 > = 0;
 
 uniform int XhairType <
   ui_category = CATEGORY_GENERAL;
   ui_type = "combo";
-  ui_items = "Cross\0Circle\0T-shaped\0";
-  ui_label = "Xhair Type";
+  ui_items = "十字\0圆形\0T 形\0";
+  ui_label = "准心类型";
 > = 0;
 
 uniform float XhairOpacity <
   ui_category = CATEGORY_GENERAL;
   ui_type = UI_TYPE_SLIDER;
   ui_min = 0.0; ui_max = 1.0;
-  ui_label = "Xhair Opacity";
+  ui_label = "准心透明度";
 > = 1.0;
 
 uniform int HideOnRMB <
   ui_category = CATEGORY_GENERAL;
   ui_type = "combo";
-  ui_items = "Hold\0Toggle\0Disabled\0";
-  ui_label = "Hide on RMB";
-  ui_tooltip = "Controls whether the crosshair should be hidden when clicking the right mouse button.";
+  ui_items = "按住\0切换\0禁用\0";
+  ui_label = "按右键隐藏";
+  ui_tooltip = "控制在点击右键时是否隐藏准心。";
 > = 0;
 
 uniform bool InvertHideOnRMB <
   ui_category = CATEGORY_GENERAL;
-  ui_label = "Invert Hide on RMB";
-  ui_tooltip = "Inverts the behavior of 'Hide on RMB'";
+  ui_label = "反转按右键隐藏";
+  ui_tooltip = "反转“按右键隐藏”的行为。";
 > = 0;
 
 /**
@@ -76,29 +76,29 @@ uniform bool InvertHideOnRMB <
 uniform int DotType <
   ui_category = CATEGORY_XHAIR_COMPOSITE;
   ui_type = "combo";
-  ui_items = "Circle\0Square\0Disabled\0";
-  ui_label = "Use Dot";
-  ui_tooltip = "Controls whether a dot should be rendered **on top** of the selected crosshair.";
+  ui_items = "圆形\0方形\0禁用\0";
+  ui_label = "使用点";
+  ui_tooltip = "控制是否在选定的准心上方渲染一个点。";
 > = 2;
 
 uniform float3 DotColor <
   ui_category = CATEGORY_XHAIR_COMPOSITE;
   ui_type = "color";
-  ui_label = "Dot Color";
+  ui_label = "点颜色";
 > = float3(0.0, 1.0, 0.0);
 
 uniform int DotSize <
   ui_category = CATEGORY_XHAIR_COMPOSITE;
   ui_type = UI_TYPE_SLIDER;
   ui_min = 1; ui_max = 30;
-  ui_label = "Dot Size";
+  ui_label = "点大小";
 > = 1;
 
 uniform float DotOpacity <
   ui_category = CATEGORY_XHAIR_COMPOSITE;
   ui_type = UI_TYPE_SLIDER;
   ui_min = 0.0; ui_max = 1.0;
-  ui_label = "Dot Opacity";
+  ui_label = "点透明度";
 > = 1.0;
 
 /**
@@ -107,56 +107,57 @@ uniform float DotOpacity <
 
 uniform float3 CrossColor <
   ui_category = CATEGORY_XHAIR_CROSS;
-  ui_type = "color";
-  ui_label = "Color";
+  ui_type = "颜色";
+  ui_label = "颜色";
 > = float3(0.0, 1.0, 0.0);
 
 uniform int CrossLength <
   ui_category = CATEGORY_XHAIR_CROSS;
   ui_type = UI_TYPE_SLIDER;
   ui_min = 1; ui_max = 100;
-  ui_label = "Length";
+  ui_label = "长度";
 > = 6;
 
 uniform int CrossThickness <
   ui_category = CATEGORY_XHAIR_CROSS;
   ui_type = UI_TYPE_SLIDER;
   ui_min = 0; ui_max = 10;
-  ui_label = "Thickness";
+  ui_label = "粗细";
 > = 1;
 
 uniform int CrossGap <
   ui_category = CATEGORY_XHAIR_CROSS;
   ui_type = UI_TYPE_SLIDER;
   ui_min = 0; ui_max = 10;
-  ui_label = "Gap";
+  ui_label = "间隙";
 > = 3;
 
+
 /**
- * Cross Xhair Outline Settings
+ * 十字准心轮廓设置
  */
 
 uniform bool CrossOutlineEnabled <
   ui_category = CATEGORY_XHAIR_CROSS;
-  ui_label = "Enable Outline";
+  ui_label = "启用轮廓";
 > = 1;
 
 uniform bool CrossOutlineGlowEnabled <
   ui_category = CATEGORY_XHAIR_CROSS;
-  ui_label = "Enable Outline Glow";
+  ui_label = "启用轮廓发光";
 > = true;
 
 uniform float3 CrossOutlineColor <
   ui_category = CATEGORY_XHAIR_CROSS;
-  ui_type = "color";
-  ui_label = "Outline Color";
+  ui_type = "颜色";
+  ui_label = "轮廓颜色";
 > = float3(0.0, 0.0, 0.0);
 
 uniform float CrossOutlineOpacity <
   ui_category = CATEGORY_XHAIR_CROSS;
   ui_type = UI_TYPE_SLIDER;
   ui_min = 0.0; ui_max = 1.0;
-  ui_label = "Outline Opacity";
+  ui_label = "轮廓透明度";
 > = 1.0;
 
 uniform int f_crossOutlineSharpness <
@@ -164,8 +165,8 @@ uniform int f_crossOutlineSharpness <
   ui_type = UI_TYPE_SLIDER;
   ui_min = 0; ui_max = (MAX_CROSS_OUTLINE_THICKNESS);
   ui_step = 1;
-  ui_label = "Outline Sharpness";
-  ui_tooltip = "Controls how many pixels should be rendered at 100% opaque around the crosshair (recommended: 1 or 0).";
+  ui_label = "轮廓锐度";
+  ui_tooltip = "控制在准心周围渲染多少像素以100％不透明（推荐：1或0）。";
 > = 1;
 #define CrossOutlineSharpness (max(f_crossOutlineSharpness, 0))
 
@@ -174,8 +175,8 @@ uniform int f_crossOutlineGlow <
   ui_type = UI_TYPE_SLIDER;
   ui_min = 0; ui_max = MAX_CROSS_OUTLINE_THICKNESS;
   ui_step = 1;
-  ui_label = "Outline Glow";
-  ui_tooltip = "Controls how many outline glow pixels should be rendered around the sharp outline.";
+  ui_label = "轮廓发光";
+  ui_tooltip = "控制在锐利轮廓周围渲染多少发光轮廓像素。";
 > = 2;
 #define CrossOutlineGlow (max(f_crossOutlineGlow, 0))
 
@@ -184,7 +185,7 @@ uniform float CrossOutlineGlowOpacity <
   ui_type = UI_TYPE_SLIDER;
   ui_min = 0.0; ui_max = 1.0;
   ui_step = 0.005;
-  ui_label = "Outline Glow Opacity";
+  ui_label = "轮廓发光透明度";
 > = 0.15;
 
 /**
@@ -194,21 +195,21 @@ uniform float CrossOutlineGlowOpacity <
 uniform float3 CircleColor <
   ui_category = CATEGORY_XHAIR_CIRCLE;
   ui_type = "color";
-  ui_label = "Color";
+  ui_label = "颜色";
 > = float3(0.0, 1.0, 0.0);
 
 uniform float CircleThickness <
   ui_category = CATEGORY_XHAIR_CIRCLE;
   ui_type = "drag";
   ui_min = 0.0; ui_max = 20.0;
-  ui_label = "Thickness";
+  ui_label = "粗细";
 > = 2.0;
 
 uniform float CircleGapRadius <
   ui_category = CATEGORY_XHAIR_CIRCLE;
   ui_type = UI_TYPE_SLIDER;
   ui_min = 0.0; ui_max = 20.0;
-  ui_label = "Gap Radius";
+  ui_label = "间隙半径";
 > = 4.0;
 
 /**
@@ -217,25 +218,27 @@ uniform float CircleGapRadius <
 
 uniform bool CircleOutlineEnabled <
   ui_category = CATEGORY_XHAIR_CIRCLE;
-  ui_label = "Enable Outline";
+  ui_label = "启用轮廓";
 > = 1;
 
 uniform bool CircleOutlineGlowEnabled <
   ui_category = CATEGORY_XHAIR_CIRCLE;
-  ui_label = "Enable Outline Glow";
+  ui_label = "启用轮廓发光";
 > = true;
+
 
 uniform float3 CircleOutlineColor <
   ui_category = CATEGORY_XHAIR_CIRCLE;
   ui_type = "color";
-  ui_label = "Outline Color";
+  ui_label = "轮廓颜色";
 > = float3(0.0, 0.0, 0.0);
+
 
 uniform float CircleOutlineOpacity <
   ui_category = CATEGORY_XHAIR_CIRCLE;
   ui_type = UI_TYPE_SLIDER;
   ui_min = 0.0; ui_max = 1.0;
-  ui_label = "Outline Opacity";
+  ui_label = "轮廓透明度";
 > = 1.0;
 
 uniform float f_circleOuterOutlineSharpness <
@@ -243,8 +246,8 @@ uniform float f_circleOuterOutlineSharpness <
   ui_type = "drag";
   ui_min = 0; ui_max = MAX_CIRCLE_OUTLINE_THICKNESS;
   ui_step = 0.01;
-  ui_label = "Outer Outline Sharpness";
-  ui_tooltip = "Controls how many outline pixels (outside of the circle)\nshould be rendered as 100% opaque.";
+  ui_label = "外轮廓锐度";
+  ui_tooltip = "控制在圆形外轮廓像素（圆形外部）中应渲染多少像素以100％不透明。";
 > = 1.0;
 #define CircleOuterOutlineSharpness (min(max(f_circleOuterOutlineSharpness, 0), CircleOuterOutlineGlow))
 
@@ -253,8 +256,8 @@ uniform float f_circleOuterOutlineGlow <
   ui_type = "drag";
   ui_min = 0.0; ui_max = MAX_CIRCLE_OUTLINE_THICKNESS;
   ui_step = 0.01;
-  ui_label = "Outer Outline Glow";
-  ui_tooltip = "Controls how many outline glow pixels (outside of the circle)\nshould be rendered around the sharp outline.";
+  ui_label = "外轮廓发光";
+  ui_tooltip = "控制在锐利轮廓外渲染多少发光轮廓像素（圆形外部）。";
 > = 2.0;
 #define CircleOuterOutlineGlow (max(f_circleOuterOutlineGlow, 0))
 
@@ -263,7 +266,7 @@ uniform float CircleOuterOutlineGlowOpacity <
   ui_type = "drag";
   ui_min = 0.0; ui_max = 1.0;
   ui_step = 0.005;
-  ui_label = "Outer Outline Glow Opacity";
+  ui_label = "外轮廓发光透明度";
 > = 0.15;
 
 uniform float f_circleInnerOutlineSharpness <
@@ -271,8 +274,8 @@ uniform float f_circleInnerOutlineSharpness <
   ui_type = "drag";
   ui_min = 0; ui_max = MAX_CIRCLE_OUTLINE_THICKNESS;
   ui_step = 0.01;
-  ui_label = "Inner Outline Sharpness";
-  ui_tooltip = "Controls how many outline pixels (inside of the circle)\nshould be rendered as 100% opaque.";
+  ui_label = "内轮廓锐度";
+  ui_tooltip = "控制在圆形内轮廓像素（圆形内部）中应渲染多少像素以100％不透明。";
 > = 1.0;
 #define CircleInnerOutlineSharpness (min(max(f_circleInnerOutlineSharpness, 0), CircleInnerOutlineGlow))
 
@@ -281,8 +284,8 @@ uniform float f_circleInnerOutlineGlow <
   ui_type = "drag";
   ui_min = 0.0; ui_max = MAX_CIRCLE_OUTLINE_THICKNESS;
   ui_step = 0.01;
-  ui_label = "Inner Outline Glow";
-  ui_tooltip = "Controls how many outline glow pixels (inside of the circle)\nshould be rendered around the sharp outline.";
+  ui_label = "内轮廓发光";
+  ui_tooltip = "控制在锐利轮廓内渲染多少发光轮廓像素（圆形内部）。";
 > = 2.0;
 #define CircleInnerOutlineGlow (max(f_circleInnerOutlineGlow, 0))
 
@@ -291,7 +294,7 @@ uniform float CircleInnerOutlineGlowOpacity <
   ui_type = "drag";
   ui_min = 0.0; ui_max = 1.0;
   ui_step = 0.005;
-  ui_label = "Inner Outline Glow Opacity";
+  ui_label = "内轮廓发光透明度";
 > = 0.15;
 
 /**
